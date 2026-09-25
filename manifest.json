@@ -1,20 +1,43 @@
 {
   "name": "Perfora Sales Portal V7",
   "short_name": "Perfora Sales",
-  "id": "/perfora-sales-pwa/",
-  "start_url": "/perfora-sales-pwa/",
-  "scope": "/perfora-sales-pwa/",
+  "id": "https://anand-suradkar.github.io/perfora-sales-pwa/",
+  "start_url": "https://anand-suradkar.github.io/perfora-sales-pwa/",
+  "scope": "https://anand-suradkar.github.io/perfora-sales-pwa/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#ddd0f7",
   "theme_color": "#ddd0f7",
   "description": "Perfora Sales Portal V7",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
-    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
-    {"src":"./icons/icon-192-maskable.png","sizes":"192x192","type":"image/png","purpose":"maskable"},
-    {"src":"./icons/icon-512-maskable.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
