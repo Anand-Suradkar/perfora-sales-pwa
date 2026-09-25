@@ -1,67 +1,122 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Perfora Sales</title>
-  <meta name="theme-color" content="#ddd0f7">
-  <meta name="description" content="Perfora Sales Portal V7">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon-180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-  <style>
-    :root{--lav:#ddd0f7;--text:#172033;--muted:#667085;--line:#e7e2f1}
-    *{box-sizing:border-box}
-    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--lav);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text)}
-    #app{position:fixed;inset:0;background:#fff;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-    iframe{display:block;width:100%;height:100%;border:0;background:#fff}
-    #loading{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:linear-gradient(135deg,#f7f2ff,#fff);transition:opacity .25s ease}
-    #loading.hide{opacity:0;pointer-events:none}
-    .box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px;text-align:center}
-    .logo{width:82px;height:82px;border-radius:22px;box-shadow:0 10px 32px rgba(16,24,40,.14);object-fit:cover}
-    .name{font-size:20px;font-weight:800}
-    .status{font-size:13px;color:var(--muted)}
-    .spinner{width:24px;height:24px;border:3px solid #e8e2f6;border-top-color:#6f42c1;border-radius:50%;animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    noscript{display:block;padding:20px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Perfora Business</title>
+<meta name="theme-color" content="#ddd0f7">
+<meta name="description" content="Perfora Sales and Payment Portals">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<style>
+:root{--lav:#ddd0f7;--text:#172033;--muted:#667085;--line:#e7e2f1;--primary:#6f42c1}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--lav);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text)}
+body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+#app{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column}
+.topbar{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line);background:#fff;flex:none}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.logo{width:40px;height:40px;border-radius:11px;object-fit:cover;box-shadow:0 6px 18px rgba(16,24,40,.12)}
+.brandtext{font-size:17px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.module-title{font-size:11px;color:var(--muted);margin-top:2px}
+#viewport{position:relative;flex:1;min-height:0;background:#fff}
+.frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;display:none}
+.frame.active{display:block}
+.loading{position:absolute;inset:0;z-index:20;display:none;place-items:center;background:linear-gradient(135deg,#f7f2ff,#fff)}
+.loading.show{display:grid}
+.box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px;text-align:center}
+.loaderlogo{width:74px;height:74px;border-radius:20px;object-fit:cover}
+.name{font-size:19px;font-weight:800}
+.status{font-size:13px;color:var(--muted)}
+.spinner{width:24px;height:24px;border:3px solid #e8e2f6;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bottom{height:70px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:#fff;flex:none;padding-bottom:env(safe-area-inset-bottom)}
+.navbtn{border:0;background:#fff;color:#667085;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:inherit;min-width:0}
+.navbtn .ico{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:19px}
+.navbtn .lbl{font-size:10px;font-weight:800}
+.navbtn.active{color:var(--primary)}
+.navbtn.active .ico{background:#efe7ff}
+.home{position:absolute;inset:0;overflow:auto;padding:22px 18px 28px;background:linear-gradient(180deg,#faf7ff 0%,#fff 45%)}
+.home h1{margin:0;font-size:24px;font-weight:900}
+.home p{margin:6px 0 18px;color:var(--muted);font-size:13px}
+.cards{display:grid;grid-template-columns:1fr;gap:14px}
+.card{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff;box-shadow:0 8px 24px rgba(16,24,40,.07);text-align:left}
+.card:active{transform:scale(.99)}
+.cardhead{display:flex;align-items:center;gap:12px}
+.cardicon{width:46px;height:46px;border-radius:14px;object-fit:cover;display:grid;place-items:center;font-size:22px}
+.sales .cardicon{background:#eee6ff;color:#6334b5}
+.payment .cardicon{background:#e8f7ff;color:#1683c7}
+.card h2{margin:0;font-size:18px;font-weight:900}
+.card span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+.cardfoot{margin-top:15px;color:var(--primary);font-size:12px;font-weight:850}
+.note{margin-top:18px;padding:12px 13px;border-radius:14px;background:#f6f3fb;color:var(--muted);font-size:11px;line-height:1.45}
+@media(min-width:800px){
+ .topbar{height:76px;padding:0 28px}
+ .brandtext{font-size:19px}
+ .module-title{font-size:12px}
+ .home{padding:34px 48px}
+ .cards{grid-template-columns:repeat(2,minmax(0,520px));gap:18px}
+ .bottom{height:76px}
+}
+</style>
 </head>
 <body>
-  <div id="app">
-    <iframe
-      id="portal"
-      title="Perfora Sales Portal V7"
-      src="https://script.google.com/a/macros/perforacare.com/s/AKfycby0WsBs-oVtRc_inN29szv4MdbpG3tAc4CoHTmz4oAfbKKc1znuV2ClpTuniWpi2Kp19A/exec"
-      allow="geolocation; camera"
-      referrerpolicy="strict-origin-when-cross-origin"
-      loading="eager"></iframe>
-  </div>
-
-  <div id="loading">
-    <div class="box">
-      <img class="logo" src="./icon-192.png" alt="Perfora">
-      <div class="name">Perfora Sales</div>
-      <div class="spinner"></div>
-      <div class="status">Loading Sales Portal…</div>
-    </div>
-  </div>
-
-  <noscript>JavaScript is required to load Perfora Sales Portal.</noscript>
-
-  <script>
-    const portal = document.getElementById('portal');
-    const loading = document.getElementById('loading');
-    portal.addEventListener('load', () => setTimeout(() => loading.classList.add('hide'), 250));
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js', {scope:'./'})
-          .catch(() => {});
-      });
-    }
-  </script>
+<div id="app">
+ <header class="topbar">
+   <div class="brand"><img class="logo" src="./icon-192.png" alt="Perfora"><div><div class="brandtext">Perfora Business</div><div class="module-title" id="moduleTitle">Sales Portal V7</div></div></div>
+ </header>
+ <div id="viewport">
+   <section id="home" class="home" aria-label="Perfora Business Home">
+     <h1>Perfora Business</h1>
+     <p>Sales and payment management in one app.</p>
+     <div class="cards">
+       <button class="card sales" onclick="showModule('sales')">
+         <div class="cardhead"><div class="cardicon">📊</div><div><h2>Sales</h2><span>Sales Portal V7</span></div></div>
+         <div class="cardfoot">Open Sales Portal →</div>
+       </button>
+       <button class="card payment" onclick="showModule('payments')">
+         <div class="cardhead"><div class="cardicon">💰</div><div><h2>Payments</h2><span>Distributor Payment Tracker</span></div></div>
+         <div class="cardfoot">Open Payment Portal →</div>
+       </button>
+     </div>
+     <div class="note">Each module loads only when you open it. Sales and Payments continue using their existing Google Apps Script backends and user access controls.</div>
+   </section>
+   <div id="loading" class="loading"><div class="box"><img class="loaderlogo" src="./icon-192.png" alt="Perfora"><div class="name" id="loadingName">Loading…</div><div class="spinner"></div><div class="status">Please wait</div></div></div>
+   <iframe id="salesFrame" class="frame" title="Perfora Sales Portal V7" src="about:blank" allow="geolocation; camera" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+   <iframe id="paymentsFrame" class="frame" title="Perfora Payment Portal" src="about:blank" allow="geolocation; camera" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+ </div>
+ <nav class="bottom" aria-label="Application navigation">
+   <button class="navbtn active" id="homeNav" onclick="showModule('home')"><div class="ico">⌂</div><div class="lbl">Home</div></button>
+   <button class="navbtn" id="salesNav" onclick="showModule('sales')"><div class="ico">📊</div><div class="lbl">Sales</div></button>
+   <button class="navbtn" id="paymentsNav" onclick="showModule('payments')"><div class="ico">💰</div><div class="lbl">Payments</div></button>
+ </nav>
+</div>
+<script>
+const URLS={sales:"https://script.google.com/a/macros/perforacare.com/s/AKfycby0WsBs-oVtRc_inN29szv4MdbpG3tAc4CoHTmz4oAfbKKc1znuV2ClpTuniWpi2Kp19A/exec",payments:"https://script.google.com/a/macros/perforacare.com/s/AKfycbxLdS9t2FYzI1lEuimJ6myg9yCxp9HPUoy2gOT-yjo5yv93VuT0kJk-eIVifH3DPnyxrg/exec"};
+let active='home';
+const home=document.getElementById('home'), loading=document.getElementById('loading');
+const frames={sales:document.getElementById('salesFrame'),payments:document.getElementById('paymentsFrame')};
+const titles={home:'Home',sales:'Sales Portal V7',payments:'Payment Portal'};
+function setNav(name){['home','sales','payments'].forEach(x=>document.getElementById(x+'Nav').classList.toggle('active',x===name));}
+function showModule(name){
+ active=name; setNav(name); document.getElementById('moduleTitle').textContent=titles[name];
+ home.style.display=name==='home'?'block':'none';
+ Object.keys(frames).forEach(x=>frames[x].classList.toggle('active',x===name));
+ if(name==='home') return;
+ const f=frames[name];
+ if(f.src==='about:blank' || f.src.endsWith('about:blank')){
+   loading.classList.add('show'); document.getElementById('loadingName').textContent=name==='sales'?'Loading Sales Portal…':'Loading Payment Portal…';
+   f.onload=()=>setTimeout(()=>loading.classList.remove('show'),250);
+   f.src=URLS[name];
+ }
+}
+window.addEventListener('load',()=>{
+ if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
+});
+</script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 {
-  "name": "Perfora Sales Portal V7",
-  "short_name": "Perfora Sales",
+  "name": "Perfora Business",
+  "short_name": "Perfora",
   "id": "https://anand-suradkar.github.io/perfora-sales-pwa/",
-  "start_url": "https://anand-suradkar.github.io/perfora-sales-pwa/",
-  "scope": "https://anand-suradkar.github.io/perfora-sales-pwa/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": [
     "standalone",
@@ -11,7 +11,7 @@
   ],
   "background_color": "#ddd0f7",
   "theme_color": "#ddd0f7",
-  "description": "Perfora Sales Portal V7",
+  "description": "Perfora Sales and Payment Portals",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
