@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Perfora Sales</title>
+  <meta name="theme-color" content="#ddd0f7">
+  <meta name="description" content="Perfora Sales Portal V7">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <style>
+    :root{--lav:#ddd0f7;--text:#172033;--muted:#667085;--line:#e7e2f1}
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--lav);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text)}
+    #app{position:fixed;inset:0;background:#fff;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+    iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+    #loading{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:linear-gradient(135deg,#f7f2ff,#fff);transition:opacity .25s ease}
+    #loading.hide{opacity:0;pointer-events:none}
+    .box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px;text-align:center}
+    .logo{width:82px;height:82px;border-radius:22px;box-shadow:0 10px 32px rgba(16,24,40,.14);object-fit:cover}
+    .name{font-size:20px;font-weight:800}
+    .status{font-size:13px;color:var(--muted)}
+    .spinner{width:24px;height:24px;border:3px solid #e8e2f6;border-top-color:#6f42c1;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    noscript{display:block;padding:20px}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <iframe
+      id="portal"
+      title="Perfora Sales Portal V7"
+      src="https://script.google.com/a/macros/perforacare.com/s/AKfycby0WsBs-oVtRc_inN29szv4MdbpG3tAc4CoHTmz4oAfbKKc1znuV2ClpTuniWpi2Kp19A/exec"
+      allow="geolocation; camera"
+      referrerpolicy="strict-origin-when-cross-origin"
+      loading="eager"></iframe>
+  </div>
+
+  <div id="loading">
+    <div class="box">
+      <img class="logo" src="./icons/icon-192.png" alt="Perfora">
+      <div class="name">Perfora Sales</div>
+      <div class="spinner"></div>
+      <div class="status">Loading Sales Portal…</div>
+    </div>
+  </div>
+
+  <noscript>JavaScript is required to load Perfora Sales Portal.</noscript>
+
+  <script>
+    const portal = document.getElementById('portal');
+    const loading = document.getElementById('loading');
+    portal.addEventListener('load', () => setTimeout(() => loading.classList.add('hide'), 250));
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', {scope:'./'})
+          .catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
