@@ -237,7 +237,6 @@ function openModule(name){
       }
     }, 20000);
   }
-  // REOPEN: same iframe remains alive, so no new URL/navigation is performed.
 }
 
 function retryModule(name){
@@ -256,14 +255,14 @@ window.addEventListener("message",function(event){
   const data=event.data || {};
   if(data.type!=="PERFORA_BUSINESS_HOME") return;
 
-  // Apps Script HTML can sit behind an additional Google wrapper iframe.
-  // The child therefore sends the message to window.top, not window.parent.
-  // Accept our known Apps Script origins and the sandboxed "null" origin.
-  if(
-    event.origin==="https://script.google.com" ||
-    event.origin==="https://script.googleusercontent.com" ||
-    event.origin==="null"
-  ){
+  const origin = event.origin || "";
+  const isAllowedOrigin = 
+    origin === "null" ||
+    origin.endsWith(".googleusercontent.com") ||
+    origin.endsWith(".google.com") ||
+    origin === "https://script.google.com";
+
+  if(isAllowedOrigin){
     if(data.source==="sales" || data.source==="payments"){
       goHome();
     }
@@ -271,7 +270,6 @@ window.addEventListener("message",function(event){
 });
 
 // Service worker keeps the Business shell available as a PWA.
-// Versioned cache in sw.js prevents an old shell from staying indefinitely.
 window.addEventListener("load",function(){
   if("serviceWorker" in navigator){
     navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(function(){});
