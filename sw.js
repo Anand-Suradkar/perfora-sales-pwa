@@ -1,4 +1,4 @@
-const CACHE = 'perfora-business-v6-4-sales-home-final';
+const CACHE = 'perfora-business-v6-5-home-button-final';
 const ASSETS = [
   './',
   './index.html',
