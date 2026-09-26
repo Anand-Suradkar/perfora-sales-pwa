@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Perfora Business</title>
-<meta name="perfora-build" content="V6.3-SINGLE-NAV-FINAL">
+<meta name="perfora-build" content="V6.4-SALES-HOME-FINAL">
 <meta name="theme-color" content="#ddd0f7">
 <meta name="description" content="Perfora Business — Sales and Payments">
 <meta name="mobile-web-app-capable" content="yes">
@@ -253,9 +253,17 @@ function retryModule(name){
 
 // Child Sales/Payment portals can ask the parent to return to Business Home.
 window.addEventListener("message",function(event){
-  if(event.origin!=="https://script.google.com" && event.origin!=="https://script.googleusercontent.com") return;
   const data=event.data || {};
-  if(data.type==="PERFORA_BUSINESS_HOME"){
+  if(data.type!=="PERFORA_BUSINESS_HOME") return;
+
+  // Accept the Home request only from one of our embedded module iframes.
+  // This avoids depending on which Google Apps Script origin is used after redirect.
+  const salesFrame=document.getElementById("salesFrame");
+  const paymentsFrame=document.getElementById("paymentsFrame");
+  const fromSales=!!salesFrame && event.source===salesFrame.contentWindow;
+  const fromPayments=!!paymentsFrame && event.source===paymentsFrame.contentWindow;
+
+  if(fromSales || fromPayments){
     goHome();
   }
 });
