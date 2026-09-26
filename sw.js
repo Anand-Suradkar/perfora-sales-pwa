@@ -1,4 +1,4 @@
-const CACHE = 'perfora-business-v6-1';
+const CACHE = 'perfora-business-v6-2-final';
 const ASSETS = [
   './',
   './index.html',
@@ -38,15 +38,15 @@ self.addEventListener('fetch', event => {
 
   if (url.origin !== self.location.origin) return;
 
+  // Network-first for the Business shell so a newly deployed index.html
+  // is picked up immediately. Cached copy is the offline fallback.
   event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-
-      return fetch(request).then(response => {
+    fetch(request)
+      .then(response => {
         const copy = response.clone();
         caches.open(CACHE).then(cache => cache.put(request, copy));
         return response;
-      }).catch(() => caches.match('./'));
-    })
+      })
+      .catch(() => caches.match(request).then(cached => cached || caches.match('./')))
   );
 });
