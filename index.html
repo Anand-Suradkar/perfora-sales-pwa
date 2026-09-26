@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Perfora Business</title>
-<meta name="perfora-build" content="V6.5-HOME-BUTTON-FINAL">
+<meta name="perfora-build" content="V6.6-PERSISTENT-HOME-RELOAD-FINAL">
 <meta name="theme-color" content="#ddd0f7">
 <meta name="description" content="Perfora Business — Sales and Payments">
 <meta name="mobile-web-app-capable" content="yes">
@@ -203,7 +203,7 @@ function openModule(name){
   const error=document.getElementById(name+"Error");
 
   state.current=name;
-  if(frame.getAttribute("src") && !state.loaded[name]) state.loaded[name]=true;
+  if(frame.getAttribute("src")) state.loaded[name]=true;
   document.body.classList.add("module-mode");
   document.getElementById("home").style.display="none";
   setModuleFrameVisibility(name);
@@ -256,13 +256,16 @@ window.addEventListener("message",function(event){
   const data=event.data || {};
   if(data.type!=="PERFORA_BUSINESS_HOME") return;
 
-  // Accept the Home request from Google Apps Script module pages.
-  // Apps Script may use script.google.com or script.googleusercontent.com
-  // depending on redirects, so support both.
-  if(
-    event.origin==="https://script.google.com" ||
-    event.origin==="https://script.googleusercontent.com"
-  ){
+  // Only an embedded Sales/Payments iframe can request Business Home.
+  // We validate the iframe window itself, so Google Apps Script redirect
+  // origins do not break the Home button.
+  const salesFrame=document.getElementById("salesFrame");
+  const paymentsFrame=document.getElementById("paymentsFrame");
+
+  const fromSales = !!salesFrame && event.source===salesFrame.contentWindow;
+  const fromPayments = !!paymentsFrame && event.source===paymentsFrame.contentWindow;
+
+  if(fromSales || fromPayments){
     goHome();
   }
 });
