@@ -1,4 +1,4 @@
-const CACHE = 'perfora-business-v6-2-final';
+const CACHE = 'perfora-business-v6-3-single-nav';
 const ASSETS = [
   './',
   './index.html',

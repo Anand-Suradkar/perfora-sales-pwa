@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Perfora Business</title>
-<meta name="perfora-build" content="V6.2-FINAL-NAVIGATION">
+<meta name="perfora-build" content="V6.3-SINGLE-NAV-FINAL">
 <meta name="theme-color" content="#ddd0f7">
 <meta name="description" content="Perfora Business — Sales and Payments">
 <meta name="mobile-web-app-capable" content="yes">
@@ -45,8 +45,8 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .cardfoot{margin-top:15px;display:flex;align-items:center;justify-content:space-between;color:var(--primary);font-size:12px;font-weight:900}
 .cardfoot small{color:var(--muted);font-size:10px;font-weight:700}
 .note{margin-top:18px;padding:12px 13px;border-radius:14px;background:#f6f3fb;color:var(--muted);font-size:11px;line-height:1.45}
-.module-shell{position:absolute;inset:0 0 70px 0;display:none;background:#fff;z-index:10}
-.module-shell.active{display:block}
+.module-shell{position:absolute;inset:0;display:none!important;background:#fff;z-index:10;visibility:hidden;pointer-events:none}
+.module-shell.active{display:block!important;visibility:visible;pointer-events:auto}
 .module-frame{display:block;width:100%;height:100%;border:0;background:#fff}
 .module-loading{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:linear-gradient(135deg,#f7f2ff,#fff)}
 .module-loading.hidden{display:none}
@@ -66,10 +66,10 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .navbtn .lbl{font-size:10px;font-weight:850}
 .navbtn.active{color:var(--primary)}
 .navbtn.active .ico{background:#efe7ff}
-.module-mode .topbar,.module-mode .bottom{display:flex}
+.module-mode .topbar,.module-mode .bottom{display:none!important}
 @media(min-width:800px){
 .topbar{height:76px;padding:0 28px}.brandtext{font-size:19px}.module-title{font-size:12px}
-.home{padding:34px 48px}.cards{grid-template-columns:repeat(2,minmax(0,520px));gap:18px}.bottom{height:76px}.module-shell{inset:0 0 76px 0}
+.home{padding:34px 48px}.cards{grid-template-columns:repeat(2,minmax(0,520px));gap:18px}.bottom{height:76px}.module-shell{inset:0}
 }
 @media(max-width:480px){
 .topbar{height:60px;padding:0 12px}.logo{width:38px;height:38px}.brandtext{font-size:16px}.module-title{font-size:10px}
@@ -106,7 +106,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
             <div class="cardfoot"><span>Open Payment Portal →</span><small>Outstanding &amp; Aging</small></div>
           </button>
         </div>
-        <div class="note">Sales and Payments stay inside the same Perfora Business app. Each module loads once and is reused when you return to it.</div>
+        <div class="note">Sales and Payments stay inside the same Perfora Business app. Only one navigation layer is shown at a time, and each module stays loaded when you return to it.</div>
       </div>
     </section>
 
