@@ -58,9 +58,6 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .module-error{display:none;max-width:440px;margin:24px auto;padding:18px;border:1px solid #f0d7d7;border-radius:14px;background:#fff8f8;color:#8b1e1e;text-align:center}
 .module-error.show{display:block}
 .module-error button{margin-top:12px;border:0;border-radius:10px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:800}
-.shell-home{position:fixed;right:14px;top:10px;z-index:60;width:38px;height:38px;border:1px solid rgba(231,226,241,.95);border-radius:12px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--primary);font-size:19px;display:none;place-items:center;box-shadow:0 5px 16px rgba(16,24,40,.12);cursor:pointer}
-.module-mode .shell-home{display:grid}
-@media(max-width:480px){.shell-home{right:10px;top:8px;width:36px;height:36px}}
 .module-back{position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:50;width:34px;height:34px;border:1px solid rgba(231,226,241,.95);border-radius:50%;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--primary);font-size:17px;display:none;place-items:center;box-shadow:0 5px 16px rgba(16,24,40,.12);cursor:pointer}
 .module-mode .module-back{display:none}
 .bottom{height:70px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:#fff;flex:none;padding-bottom:env(safe-area-inset-bottom)}
@@ -69,6 +66,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .navbtn .lbl{font-size:10px;font-weight:850}
 .navbtn.active{color:var(--primary)}
 .navbtn.active .ico{background:#efe7ff}
+.module-mode .topbar{display:none}
 @media(min-width:800px){
 .module-shell{inset:0 0 76px 0}
 .topbar{height:76px;padding:0 28px}.brandtext{font-size:19px}.module-title{font-size:12px}
@@ -109,7 +107,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
             <div class="cardfoot"><span>Open Payment Portal →</span><small>Outstanding &amp; Aging</small></div>
           </button>
         </div>
-        <div class="note">Sales and Payments stay inside the same Perfora Business app. Each module loads once and is reused when you return to it.</div>
+        <div class="note">Sales and Payments stay inside the same Perfora Business app. Each module loads once and is reused when you return to it. Use the bottom Home button to return to Business Home.</div>
       </div>
     </section>
 
@@ -152,7 +150,6 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
     </div>
 
     <button class="module-back" id="moduleBack" type="button" aria-label="Back to Perfora Business Home" onclick="goHome()">⌂</button>
-    <button class="shell-home" id="shellHome" type="button" aria-label="Perfora Business Home" onclick="goHome()">⌂</button>
   </div>
 
   <nav class="bottom" aria-label="Application navigation">
