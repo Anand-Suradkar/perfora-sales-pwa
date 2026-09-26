@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Perfora Business</title>
-<meta name="perfora-build" content="V6.6-PERSISTENT-HOME-RELOAD-FINAL">
+<meta name="perfora-build" content="V6.8-TOP-MESSAGE-PERSISTENT-FINAL">
 <meta name="theme-color" content="#ddd0f7">
 <meta name="description" content="Perfora Business — Sales and Payments">
 <meta name="mobile-web-app-capable" content="yes">
@@ -256,17 +256,17 @@ window.addEventListener("message",function(event){
   const data=event.data || {};
   if(data.type!=="PERFORA_BUSINESS_HOME") return;
 
-  // Only an embedded Sales/Payments iframe can request Business Home.
-  // We validate the iframe window itself, so Google Apps Script redirect
-  // origins do not break the Home button.
-  const salesFrame=document.getElementById("salesFrame");
-  const paymentsFrame=document.getElementById("paymentsFrame");
-
-  const fromSales = !!salesFrame && event.source===salesFrame.contentWindow;
-  const fromPayments = !!paymentsFrame && event.source===paymentsFrame.contentWindow;
-
-  if(fromSales || fromPayments){
-    goHome();
+  // Apps Script HTML can sit behind an additional Google wrapper iframe.
+  // The child therefore sends the message to window.top, not window.parent.
+  // Accept our known Apps Script origins and the sandboxed "null" origin.
+  if(
+    event.origin==="https://script.google.com" ||
+    event.origin==="https://script.googleusercontent.com" ||
+    event.origin==="null"
+  ){
+    if(data.source==="sales" || data.source==="payments"){
+      goHome();
+    }
   }
 });
 
