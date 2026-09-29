@@ -47,7 +47,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .note{margin-top:18px;padding:12px 13px;border-radius:14px;background:#f6f3fb;color:var(--muted);font-size:11px;line-height:1.45}
 .module-shell{position:absolute;inset:0;display:none!important;background:#fff;z-index:10;visibility:hidden;pointer-events:none}
 .module-shell.active{display:block!important;visibility:visible;pointer-events:auto}
-.module-frame{display:block;width:100%;height:100%;border:0;background:#fff}
+.module-frame{display:block;width:100%;height:calc(100% + 82px);border:0;background:#fff}
 .module-loading{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:linear-gradient(135deg,#f7f2ff,#fff)}
 .module-loading.hidden{display:none}
 .loading-box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px;text-align:center}
@@ -66,7 +66,8 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .navbtn .lbl{font-size:10px;font-weight:850}
 .navbtn.active{color:var(--primary)}
 .navbtn.active .ico{background:#efe7ff}
-.module-mode .topbar,.module-mode .bottom{display:none!important}
+.module-mode .topbar{display:none!important}
+.module-mode .bottom{display:grid!important}
 @media(min-width:800px){
 .topbar{height:76px;padding:0 28px}.brandtext{font-size:19px}.module-title{font-size:12px}
 .home{padding:34px 48px}.cards{grid-template-columns:repeat(2,minmax(0,520px));gap:18px}.bottom{height:76px}.module-shell{inset:0}
@@ -110,7 +111,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
             <div class="cardfoot"><span>Create Purchase Order →</span><small>SKU-wise Qty &amp; Value</small></div>
           </button>
         </div>
-        <div class="note">Sales, Payments and Raise PO stay inside the same Perfora Sales Management app. Each module uses its own single navigation layer while open, and the module stays loaded when you return to it.</div>
+        <div class="note">Sales, Payments and Raise PO stay inside the same Perfora Sales Management app. Use the common bottom navigation to switch between Home, Sales, Payments and Purchase Order. Each module stays loaded when you return to it.</div>
       </div>
     </section>
 
@@ -241,7 +242,7 @@ function openModule(name){
   document.body.classList.add("module-mode");
   document.getElementById("home").style.display="none";
   setModuleFrameVisibility(name);
-  const titles = {sales:"Sales Portal V7", payments:"Payment Portal", raisePo:"Raise PO"};
+  const titles = {sales:"Sales Portal V7", payments:"Payment Portal", raisePo:"Purchase Order"};
   document.getElementById("moduleTitle").textContent = titles[name] || name;
   setNav(name);
   error.classList.remove("show");
@@ -287,11 +288,7 @@ function retryModule(name){
 window.addEventListener("message",function(event){
   const data=event.data || {};
   const origin = event.origin || "";
-  const isAllowedOrigin =
-    origin === "null" ||
-    origin.endsWith(".googleusercontent.com") ||
-    origin.endsWith(".google.com") ||
-    origin === "https://script.google.com";
+  const isAllowedOrigin = !origin || origin === "null" || origin.includes("googleusercontent.com") || origin.includes("google.com") || origin === "https://script.google.com";
   if(!isAllowedOrigin) return;
   if(data.type==="PERFORA_BUSINESS_HOME" && (data.source==="sales" || data.source==="payments" || data.source==="raisePo")){
     goHome();

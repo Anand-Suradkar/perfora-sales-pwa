@@ -1,4 +1,4 @@
-const CACHE = 'perfora-business-v7-1-raise-po-workspace';
+const CACHE = 'perfora-business-v7-2-ui-fix';
 const ASSETS = [
   './',
   './index.html',
