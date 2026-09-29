@@ -1,6 +1,6 @@
 {
-  "name": "Perfora Business",
-  "short_name": "Perfora",
+  "name": "Perfora Sales Management",
+  "short_name": "Perfora Sales",
   "id": "https://anand-suradkar.github.io/perfora-sales-pwa/",
   "start_url": "./",
   "scope": "./",
@@ -12,7 +12,7 @@
   ],
   "background_color": "#ddd0f7",
   "theme_color": "#ddd0f7",
-  "description": "Perfora Business — Sales and Payments",
+  "description": "Perfora Sales Management — Sales, Payments and Raise PO",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

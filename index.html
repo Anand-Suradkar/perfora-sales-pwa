@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Perfora Business</title>
-<meta name="perfora-build" content="V7.0-RAISE-PO-FINAL">
+<title>Perfora Sales Management</title>
+<meta name="perfora-build" content="V7.1-RAISE-PO-WORKSPACE">
 <meta name="theme-color" content="#ddd0f7">
-<meta name="description" content="Perfora Business — Sales and Payments">
+<meta name="description" content="Perfora Sales Management — Sales, Payments and Raise PO">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Perfora">
@@ -66,7 +66,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .navbtn .lbl{font-size:10px;font-weight:850}
 .navbtn.active{color:var(--primary)}
 .navbtn.active .ico{background:#efe7ff}
-.module-mode .topbar{display:flex!important}.module-mode .bottom{display:grid!important}
+.module-mode .topbar,.module-mode .bottom{display:none!important}
 @media(min-width:800px){
 .topbar{height:76px;padding:0 28px}.brandtext{font-size:19px}.module-title{font-size:12px}
 .home{padding:34px 48px}.cards{grid-template-columns:repeat(2,minmax(0,520px));gap:18px}.bottom{height:76px}.module-shell{inset:0}
@@ -83,17 +83,17 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
     <div class="brand">
       <img class="logo" src="./icon-192.png" alt="Perfora">
       <div>
-        <div class="brandtext">Perfora Business</div>
+        <div class="brandtext">Perfora Sales Management</div>
         <div class="module-title" id="moduleTitle">Home</div>
       </div>
     </div>
   </header>
 
   <div id="viewport">
-    <section id="home" class="home" aria-label="Perfora Business Home">
+    <section id="home" class="home" aria-label="Perfora Sales Management Home">
       <div class="home-inner">
-        <div class="welcome">PERFORA BUSINESS</div>
-        <h1>One app for your business</h1>
+        <div class="welcome">PERFORA SALES MANAGEMENT</div>
+        <h1>Sales App by Anand Suradkar</h1>
         <p>Sales performance and distributor payments in one place.</p>
         <div class="section-label">Business Modules</div>
         <div class="cards">
@@ -110,7 +110,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
             <div class="cardfoot"><span>Create Purchase Order →</span><small>SKU-wise Qty &amp; Value</small></div>
           </button>
         </div>
-        <div class="note">Sales and Payments stay inside the same Perfora Business app. Only one navigation layer is shown at a time, and each module stays loaded when you return to it.</div>
+        <div class="note">Sales, Payments and Raise PO stay inside the same Perfora Sales Management app. Each module uses its own single navigation layer while open, and the module stays loaded when you return to it.</div>
       </div>
     </section>
 
@@ -176,7 +176,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
       </div>
     </div>
 
-    <button class="module-back" id="moduleBack" type="button" aria-label="Back to Perfora Business Home" tabindex="-1" aria-hidden="true">⌂</button>
+    <button class="module-back" id="moduleBack" type="button" aria-label="Back to Perfora Sales Management Home" tabindex="-1" aria-hidden="true">⌂</button>
   </div>
 
   <nav class="bottom" aria-label="Application navigation">
@@ -201,7 +201,7 @@ const state = {
 };
 
 function setNav(active){
-  ["home","sales","payments"].forEach(function(name){
+  ["home","sales","payments","raisePo"].forEach(function(name){
     const el=document.getElementById(name+"Nav");
     if(el) el.classList.toggle("active", name===active);
   });
@@ -286,19 +286,19 @@ function retryModule(name){
 // Child Sales/Payment portals message handler
 window.addEventListener("message",function(event){
   const data=event.data || {};
-  if(data.type!=="PERFORA_BUSINESS_HOME") return;
-
   const origin = event.origin || "";
-  const isAllowedOrigin = 
+  const isAllowedOrigin =
     origin === "null" ||
     origin.endsWith(".googleusercontent.com") ||
     origin.endsWith(".google.com") ||
     origin === "https://script.google.com";
-
-  if(isAllowedOrigin){
-    if(data.source==="sales" || data.source==="payments" || data.source==="raisePo"){
-      goHome();
-    }
+  if(!isAllowedOrigin) return;
+  if(data.type==="PERFORA_BUSINESS_HOME" && (data.source==="sales" || data.source==="payments" || data.source==="raisePo")){
+    goHome();
+    return;
+  }
+  if(data.type==="PERFORA_BUSINESS_NAV" && data.source==="raisePo" && ["home","sales","payments","raisePo"].indexOf(data.target)>=0){
+    if(data.target==="home") goHome(); else openModule(data.target);
   }
 });
 
