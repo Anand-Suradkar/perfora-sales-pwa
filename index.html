@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Perfora Business</title>
-<meta name="perfora-build" content="V6.8-TOP-MESSAGE-PERSISTENT-FINAL">
+<meta name="perfora-build" content="V6.9-IOS-SAFARI-FIX">
 <meta name="theme-color" content="#ddd0f7">
 <meta name="description" content="Perfora Business — Sales and Payments">
 <meta name="mobile-web-app-capable" content="yes">
@@ -58,7 +58,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 @keyframes spin{to{transform:rotate(360deg)}}
 .module-error{display:none;max-width:440px;margin:24px auto;padding:18px;border:1px solid #f0d7d7;border-radius:14px;background:#fff8f8;color:#8b1e1e;text-align:center}
 .module-error.show{display:block}
-.module-error button{margin-top:12px;border:0;border-radius:10px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:800}
+.module-error button,.direct-btn{margin-top:10px;border:0;border-radius:10px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:800;cursor:pointer}
 .module-back{display:none!important}
 .bottom{height:70px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:#fff;flex:none;padding-bottom:env(safe-area-inset-bottom)}
 .navbtn{border:0;background:#fff;color:#667085;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:inherit;min-width:0}
@@ -120,12 +120,14 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
           <div class="name">Opening Sales Portal…</div>
           <div class="spinner"></div>
           <div class="status">Loading Sales for the first time</div>
+          <button type="button" class="direct-btn" onclick="openDirect('sales')">Direct Open (Safari Fix)</button>
         </div>
       </div>
       <div id="salesError" class="module-error">
         <div><strong>Sales Portal could not be loaded.</strong></div>
-        <div>Please try again.</div>
+        <div>Please check Google Login or Safari settings.</div>
         <button type="button" onclick="retryModule('sales')">Retry Sales</button>
+        <button type="button" class="direct-btn" onclick="openDirect('sales')">Open Directly</button>
       </div>
     </div>
 
@@ -139,12 +141,14 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
           <div class="name">Opening Payment Portal…</div>
           <div class="spinner"></div>
           <div class="status">Loading Payments for the first time</div>
+          <button type="button" class="direct-btn" onclick="openDirect('payments')">Direct Open (Safari Fix)</button>
         </div>
       </div>
       <div id="paymentsError" class="module-error">
         <div><strong>Payment Portal could not be loaded.</strong></div>
-        <div>Please try again.</div>
+        <div>Please check Google Login or Safari settings.</div>
         <button type="button" onclick="retryModule('payments')">Retry Payments</button>
+        <button type="button" class="direct-btn" onclick="openDirect('payments')">Open Directly</button>
       </div>
     </div>
 
@@ -195,6 +199,10 @@ function goHome(){
   setNav("home");
 }
 
+function openDirect(name){
+  if(URLS[name]) window.open(URLS[name], "_blank");
+}
+
 function openModule(name){
   if(!URLS[name]) return;
 
@@ -230,12 +238,11 @@ function openModule(name){
 
     frame.src=URLS[name];
 
-    // Avoid leaving the user stuck forever if the remote page doesn't fire onload.
     setTimeout(function(){
       if(!state.loaded[name] && state.current===name){
         loading.classList.add("hidden");
       }
-    }, 20000);
+    }, 12000);
   }
 }
 
@@ -250,7 +257,7 @@ function retryModule(name){
   setTimeout(function(){ openModule(name); }, 0);
 }
 
-// Child Sales/Payment portals can ask the parent to return to Business Home.
+// Child Sales/Payment portals message handler
 window.addEventListener("message",function(event){
   const data=event.data || {};
   if(data.type!=="PERFORA_BUSINESS_HOME") return;
@@ -269,7 +276,6 @@ window.addEventListener("message",function(event){
   }
 });
 
-// Service worker keeps the Business shell available as a PWA.
 window.addEventListener("load",function(){
   if("serviceWorker" in navigator){
     navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(function(){});
