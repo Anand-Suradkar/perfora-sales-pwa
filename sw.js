@@ -1,4 +1,4 @@
-const CACHE = 'perfora-business-v6-8-top-message-persistent-final';
+const CACHE = 'perfora-business-v7-0-raise-po-final';
 const ASSETS = [
   './',
   './index.html',
