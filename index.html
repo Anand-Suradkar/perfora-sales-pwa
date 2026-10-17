@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Perfora Sales Management</title>
-<meta name="perfora-build" content="V7.1-RAISE-PO-WORKSPACE">
+<meta name="perfora-build" content="V7.2-SALES-DSR-TEST-INTEGRATION">
 <meta name="theme-color" content="#ddd0f7">
 <meta name="description" content="Perfora Sales Management — Sales, Payments and Raise PO">
 <meta name="mobile-web-app-capable" content="yes">
@@ -39,6 +39,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .cardhead{display:flex;align-items:center;gap:12px}
 .cardicon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:22px}
 .sales .cardicon{background:#eee6ff;color:#6334b5}
+.sales-dsr .cardicon{background:#e0f2fe;color:#0369a1}
 .payment .cardicon{background:#e8f7ff;color:#1683c7}.raise-po .cardicon{background:#fff3df;color:#b96b00}
 .card h2{margin:0;font-size:18px;font-weight:920}
 .card span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
@@ -60,7 +61,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .module-error.show{display:block}
 .module-error button,.direct-btn{margin-top:10px;border:0;border-radius:10px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:800;cursor:pointer}
 .module-back{display:none!important}
-.bottom{height:70px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:#fff;flex:none;padding-bottom:env(safe-area-inset-bottom)}
+.bottom{height:70px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);background:#fff;flex:none;padding-bottom:env(safe-area-inset-bottom)}
 .navbtn{border:0;background:#fff;color:#667085;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:inherit;min-width:0}
 .navbtn .ico{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:19px}
 .navbtn .lbl{font-size:10px;font-weight:850}
@@ -68,6 +69,12 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .navbtn.active .ico{background:#efe7ff}
 .module-mode .topbar{display:none!important}
 .module-mode .bottom{display:grid!important}
+.dsr-exit{display:none;border:1px solid var(--line);background:#fff;color:var(--primary);border-radius:10px;padding:8px 12px;font:inherit;font-weight:850;cursor:pointer}
+.module-mode.dsr-module-mode .topbar{display:flex!important;height:44px;padding:0 12px;border-bottom:1px solid var(--line)}
+.module-mode.dsr-module-mode .brand{display:none}
+.module-mode.dsr-module-mode .dsr-exit{display:block}
+.module-mode.dsr-module-mode .bottom{display:none!important}
+.module-frame.dsr-frame{height:100%}
 @media(min-width:800px){
 .topbar{height:76px;padding:0 28px}.brandtext{font-size:19px}.module-title{font-size:12px}
 .home{padding:34px 48px}.cards{grid-template-columns:repeat(2,minmax(0,520px));gap:18px}.bottom{height:76px}.module-shell{inset:0}
@@ -88,6 +95,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
         <div class="module-title" id="moduleTitle">Home</div>
       </div>
     </div>
+    <button type="button" class="dsr-exit" onclick="goHome()" aria-label="Return to Perfora app home">← App Home</button>
   </header>
 
   <div id="viewport">
@@ -95,12 +103,16 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
       <div class="home-inner">
         <div class="welcome">PERFORA SALES MANAGEMENT</div>
         <h1>Sales App by Anand Suradkar</h1>
-        <p>Sales performance and distributor payments in one place.</p>
+        <p>Sales performance, daily field execution and distributor payments in one place.</p>
         <div class="section-label">Business Modules</div>
         <div class="cards">
           <button class="card sales" onclick="openModule('sales')">
             <div class="cardhead"><div class="cardicon">📊</div><div><h2>Sales</h2><span>Sales Portal V7</span></div></div>
             <div class="cardfoot"><span>Open Sales Portal →</span><small>Performance &amp; Stores</small></div>
+          </button>
+          <button class="card sales-dsr" onclick="openModule('salesDsr')">
+            <div class="cardhead"><div class="cardicon">🎯</div><div><h2>Sales DSR</h2><span>Sales Force Automation</span></div></div>
+            <div class="cardfoot"><span>Open Sales DSR →</span><small>Live sales &amp; team tasks</small></div>
           </button>
           <button class="card payment" onclick="openModule('payments')">
             <div class="cardhead"><div class="cardicon">💰</div><div><h2>Payments</h2><span>Distributor Payment Tracker</span></div></div>
@@ -111,7 +123,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
             <div class="cardfoot"><span>Create Purchase Order →</span><small>SKU-wise Qty &amp; Value</small></div>
           </button>
         </div>
-        <div class="note">Sales, Payments and Raise PO stay inside the same Perfora Sales Management app. Use the common bottom navigation to switch between Home, Sales, Payments and Purchase Order. Each module stays loaded when you return to it.</div>
+        <div class="note">Sales, Sales DSR, Payments and Raise PO are available from the same Perfora Sales Management app. Sales DSR opens in its own workspace with its Dashboard, Beat, Order, New Store and Claims navigation. Existing modules retain their current destinations.</div>
       </div>
     </section>
 
@@ -133,6 +145,25 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
         <div>Please check Google Login or Safari settings.</div>
         <button type="button" onclick="retryModule('sales')">Retry Sales</button>
         <button type="button" class="direct-btn" onclick="openDirect('sales')">Open Directly</button>
+      </div>
+    </div>
+
+    <div id="salesDsrShell" class="module-shell" aria-hidden="true">
+      <iframe id="salesDsrFrame" class="module-frame dsr-frame" title="Perfora Sales DSR"
+              allow="geolocation *; camera *; microphone *; clipboard-write *"
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div id="salesDsrLoading" class="module-loading hidden">
+        <div class="loading-box">
+          <img class="loaderlogo" src="./icon-192.png" alt="Perfora">
+          <div class="name">Opening Sales DSR…</div>
+          <div class="spinner"></div>
+          <div class="status">Connecting to the separate test deployment</div>
+        </div>
+      </div>
+      <div id="salesDsrError" class="module-error">
+        <div><strong>Sales DSR test URL is not configured.</strong></div>
+        <div>If Sales DSR does not load, verify this test deployment is accessible to the signed-in Perfora Google account and that its doGet() allows iframe embedding.</div>
+        <button type="button" onclick="retryModule('salesDsr')">Retry Sales DSR</button>
       </div>
     </div>
 
@@ -183,6 +214,7 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
   <nav class="bottom" aria-label="Application navigation">
     <button class="navbtn active" id="homeNav" onclick="goHome()"><div class="ico">⌂</div><div class="lbl">Home</div></button>
     <button class="navbtn" id="salesNav" onclick="openModule('sales')"><div class="ico">📊</div><div class="lbl">Sales</div></button>
+    <button class="navbtn" id="salesDsrNav" onclick="openModule('salesDsr')"><div class="ico">🎯</div><div class="lbl">DSR</div></button>
     <button class="navbtn" id="paymentsNav" onclick="openModule('payments')"><div class="ico">💰</div><div class="lbl">Payments</div></button>
     <button class="navbtn" id="raisePoNav" onclick="openModule('raisePo')"><div class="ico">📦</div><div class="lbl">Raise PO</div></button>
   </nav>
@@ -191,25 +223,27 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 <script>
 const URLS = {
   sales: "https://script.google.com/a/macros/perforacare.com/s/AKfycby0WsBs-oVtRc_inN29szv4MdbpG3tAc4CoHTmz4oAfbKKc1znuV2ClpTuniWpi2Kp19A/exec",
+  // Separate Sales DSR test deployment URL supplied for this PWA integration test.
+  salesDsr: "https://script.google.com/a/macros/perforacare.com/s/AKfycbwnLtyqvwI8HdViGPTCw01JiG2Ztb1McJKFHVZy53exH8eUNdxl8KT3eFJWKXXCSbcmDA/exec",
   payments: "https://script.google.com/a/macros/perforacare.com/s/AKfycbxLdS9t2FYzI1lEuimJ6myg9yCxp9HPUoy2gOT-yjo5yv93VuT0kJk-eIVifH3DPnyxrg/exec",
   raisePo: "https://script.google.com/a/macros/perforacare.com/s/AKfycbxzJXIZVb74buzMjObzX5bJiZzbjawI_MpUVu4XlkZU5JHyB-RCa3srpBkVfL5WGXXH/exec"
 };
 
 const state = {
   current: "home",
-  loaded: {sales:false, payments:false, raisePo:false},
-  loadingStartedAt: {sales:0, payments:0, raisePo:0}
+  loaded: {sales:false, salesDsr:false, payments:false, raisePo:false},
+  loadingStartedAt: {sales:0, salesDsr:0, payments:0, raisePo:0}
 };
 
 function setNav(active){
-  ["home","sales","payments","raisePo"].forEach(function(name){
+  ["home","sales","salesDsr","payments","raisePo"].forEach(function(name){
     const el=document.getElementById(name+"Nav");
     if(el) el.classList.toggle("active", name===active);
   });
 }
 
 function setModuleFrameVisibility(name){
-  ["sales","payments","raisePo"].forEach(function(module){
+  ["sales","salesDsr","payments","raisePo"].forEach(function(module){
     const shell=document.getElementById(module+"Shell");
     const isActive=module===name;
     shell.classList.toggle("active",isActive);
@@ -219,7 +253,7 @@ function setModuleFrameVisibility(name){
 
 function goHome(){
   state.current="home";
-  document.body.classList.remove("module-mode");
+  document.body.classList.remove("module-mode", "dsr-module-mode");
   document.getElementById("home").style.display="block";
   setModuleFrameVisibility("");
   document.getElementById("moduleTitle").textContent="Home";
@@ -227,27 +261,38 @@ function goHome(){
 }
 
 function openDirect(name){
-  if(URLS[name]) window.open(URLS[name], "_blank");
+  const url = URLS[name];
+  if(typeof url === "string" && /^https?:\/\//i.test(url)) window.open(url, "_blank");
 }
 
 function openModule(name){
-  if(!URLS[name]) return;
+  const allowedModules = ["sales", "salesDsr", "payments", "raisePo"];
+  if(allowedModules.indexOf(name) < 0) return;
 
   const frame=document.getElementById(name+"Frame");
   const loading=document.getElementById(name+"Loading");
   const error=document.getElementById(name+"Error");
+  if(!frame || !loading || !error) return;
 
   state.current=name;
-  if(frame.getAttribute("src")) state.loaded[name]=true;
   document.body.classList.add("module-mode");
+  document.body.classList.toggle("dsr-module-mode", name === "salesDsr");
   document.getElementById("home").style.display="none";
   setModuleFrameVisibility(name);
-  const titles = {sales:"Sales Portal V7", payments:"Payment Portal", raisePo:"Purchase Order"};
+  const titles = {sales:"Sales Portal V7", salesDsr:"Sales DSR", payments:"Payment Portal", raisePo:"Purchase Order"};
   document.getElementById("moduleTitle").textContent = titles[name] || name;
   setNav(name);
+
+  const configured = typeof URLS[name] === "string" && /^https?:\/\//i.test(URLS[name]);
+  if(!configured){
+    loading.classList.add("hidden");
+    error.classList.add("show");
+    return;
+  }
   error.classList.remove("show");
 
-  // FIRST OPEN: load the iframe once.
+  if(frame.getAttribute("src")) state.loaded[name]=true;
+  // FIRST OPEN: load each module iframe once and preserve its state on return.
   if(!state.loaded[name] && !frame.getAttribute("src")){
     state.loadingStartedAt[name]=Date.now();
     loading.classList.remove("hidden");
@@ -290,11 +335,11 @@ window.addEventListener("message",function(event){
   const origin = event.origin || "";
   const isAllowedOrigin = !origin || origin === "null" || origin.includes("googleusercontent.com") || origin.includes("google.com") || origin === "https://script.google.com";
   if(!isAllowedOrigin) return;
-  if(data.type==="PERFORA_BUSINESS_HOME" && (data.source==="sales" || data.source==="payments" || data.source==="raisePo")){
+  if(data.type==="PERFORA_BUSINESS_HOME" && (data.source==="sales" || data.source==="salesDsr" || data.source==="payments" || data.source==="raisePo")){
     goHome();
     return;
   }
-  if(data.type==="PERFORA_BUSINESS_NAV" && data.source==="raisePo" && ["home","sales","payments","raisePo"].indexOf(data.target)>=0){
+  if(data.type==="PERFORA_BUSINESS_NAV" && data.source==="raisePo" && ["home","sales","salesDsr","payments","raisePo"].indexOf(data.target)>=0){
     if(data.target==="home") goHome(); else openModule(data.target);
   }
 });

@@ -1,7 +1,7 @@
 {
   "name": "Perfora Sales Management",
-  "short_name": "Perfora Sales",
-  "id": "https://anand-suradkar.github.io/perfora-sales-pwa/",
+  "short_name": "Perfora Test 2",
+  "id": "./?pwa-test=sales-dsr-v2-url-wired",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -12,7 +12,7 @@
   ],
   "background_color": "#ddd0f7",
   "theme_color": "#ddd0f7",
-  "description": "Perfora Sales Management — Sales, Payments and Raise PO",
+  "description": "Perfora Sales Management test shell — Sales, Sales DSR, Payments and Raise PO",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
