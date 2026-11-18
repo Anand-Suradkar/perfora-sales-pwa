@@ -1,4 +1,4 @@
-const CACHE = 'perfora-business-v7-4-sales-dsr-test-url-wired';
+const CACHE = 'perfora-business-v7-5-dsr-integrated-home-header';
 const ASSETS = [
   './',
   './index.html',
